@@ -3,6 +3,7 @@ package main
 import(
 	"fmt"
 	"github.com/ChimeraCoder/anaconda"
+        "flag"
 )
 
 func GetTwitterApi() *anaconda.TwitterApi {
@@ -13,16 +14,16 @@ func GetTwitterApi() *anaconda.TwitterApi {
 }
 
 func main(){
-    api := GetTwitterApi()
-    text := "Test Tweet" 
-/*   
-    Enable tweeting using CliFlag
-    ex: ./tweet -t "Hoge Hoge"
-*/
+var text string
+flag.StringVar(&text, "t", "", "tweet text")
+flag.Parse()
+api := GetTwitterApi()
 
-    tweet, err := api.PostTweet(text, nil)
-    if err != nil {
-        panic(err)
-        }
-    fmt.Print(tweet.Text)
+
+tweet, err := api.PostTweet(text, nil)
+if err != nil {
+    panic(err)
+    }
+fmt.Print("tweeted:" + tweet.Text)
+
 }
